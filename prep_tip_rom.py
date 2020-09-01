@@ -26,6 +26,7 @@ for i in range(0, len(content),8):
         current_rom = high_rom
         print('Wrote: {} lines to {}'.format(str(mem_index), outfile0))
         print("Starting " + outfile1)
+        mem_index = 0
     current_rom.write(dword_swap + '\n')
     mem_index += 1
-
+print('Wrote: {} lines to {}'.format(str(mem_index), outfile1))
