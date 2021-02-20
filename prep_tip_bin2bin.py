@@ -1,8 +1,8 @@
 import os
 import sys
 filename = 'tip_rom.bin'
-outfile0 = 'TIP_ROM_HI_TAY0_verilog.rcf '
-outfile1 = 'TIP_ROM_LO_TAY0_verilog.rcf'
+outfile0 = 'TIP_ROM_LO_TAY0_verilog.rcf'
+outfile1 = 'TIP_ROM_HI_TAY0_verilog.rcf'
 
 hexLines = os.popen('convert_bin2hex ' + sys.argv[1]).read().splitlines()
 
@@ -13,7 +13,7 @@ high_rom = open(outfile1, 'w')
 binLines = []
 for line in hexLines:
     binLines.append(bin(int(line, 16))[2:].zfill(32))
-
+    #print( bin(int(line, 16))[2:].zfill(32) )
 mem_index = 0
 current_rom = low_rom
 print("Starting " + outfile0)
