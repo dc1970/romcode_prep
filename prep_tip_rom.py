@@ -1,4 +1,9 @@
+
+#  Usage: prep_tip_rom.pl <file>.bin
+#  Convert .bin to two HEX files
+
 import binascii
+
 filename = 'tip_rom.bin'
 outfile0 = 'TIP_ROM_0.HEX'
 outfile1 = 'TIP_ROM_1.HEX'

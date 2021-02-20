@@ -1,4 +1,8 @@
 #!/usr/local/bin/python3
+
+#  Convert bin to 1 binary file
+#  Usage: convert_bin2bin.py <file>.bin
+
 import os
 import sys
 

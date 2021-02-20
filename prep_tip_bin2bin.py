@@ -1,3 +1,7 @@
+
+#  Usage: prep_tip_bin2bin.pl <file>.bin
+#  Convert .bin to two binary files
+
 import os
 import sys
 filename = 'tip_rom.bin'
