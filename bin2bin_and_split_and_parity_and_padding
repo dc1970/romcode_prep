@@ -1,0 +1,27 @@
+#!/bin/csh -fb
+
+# 26-Jun-19
+# for arbel TIP ROM  16384X32 
+# generate 4 parity bits as MSB
+
+# 07-Aug-20 arikh
+# based on ~/cshells/bin2hex_and_parity
+
+# arikh 04-Sep-20 for TIP 01.01.03
+# based on ~/cshells/bin2hex_and_parity_and_padding
+
+#set bin_file = /users/cad/arikh/EC_GM_ROM_CODE.bin
+set bin_file = $1
+if ( "$bin_file" == "" ) then
+  echo "Usage: $0 <bin-file>"
+  exit 2
+endif
+
+head --bytes=65536 $bin_file | xxd -p -c 4 | awk '{for (i=9; i>0; i=i-4) printf substr($0,i+2,2) substr($0,i,2); print ""}' | awk 'BEGIN {o=11; z="00"; a["0"]=z z; a["1"]= z"01"; a["2"]=z"10"; a["3"]=z o; a["4"]="01"z; a["5"]="0101"; a["6"]="0110"; a["7"]="01"o; a["8"]="10"z; a["9"]=1001; a["a"]=1010; a["b"]="10"o; a["c"]=o z; a["d"]=o"01"; a["e"]=o"10"; a["f"]=o o} {for (i=1; i<9; i++) printf a[substr($0,i,1)]; print "" }' | awk '{ for(b=0;b<32;b=b+8) { c=0; for (i=1;i<9;i++) c=c + (substr($1,i+b,1)=="1"); printf c%2 } print $1 }' | awk '{ if ( length<36) { for(i=length;i<36;i++) printf("%s","0")} print} END { for(i=NR;i<16384;i++) print "000000000000000000000000000000000000"}' >! TIP_ROM_LO_TAY0_verilog.rcf
+
+set file_size = `wc -c $bin_file | awk '{print $1}'`
+
+@ file_size = $file_size - 65536
+
+tail --bytes=$file_size $bin_file | xxd -p -c 4 | awk '{for (i=9; i>0; i=i-4) printf substr($0,i+2,2) substr($0,i,2); print ""}' | awk 'BEGIN {o=11; z="00"; a["0"]=z z; a["1"]= z"01"; a["2"]=z"10"; a["3"]=z o; a["4"]="01"z; a["5"]="0101"; a["6"]="0110"; a["7"]="01"o; a["8"]="10"z; a["9"]=1001; a["a"]=1010; a["b"]="10"o; a["c"]=o z; a["d"]=o"01"; a["e"]=o"10"; a["f"]=o o} {for (i=1; i<9; i++) printf a[substr($0,i,1)]; print "" }' | awk '{ for(b=0;b<32;b=b+8) { c=0; for (i=1;i<9;i++) c=c + (substr($1,i+b,1)=="1"); printf c%2 } print $1 }' | awk '{ if ( length<36) { for(i=length;i<36;i++) printf("%s","0")} print} END { for(i=NR;i<16384;i++) print "000000000000000000000000000000000000"}' >! TIP_ROM_HI_TAY0_verilog.rcf
+
